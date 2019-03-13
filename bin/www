@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+
+app.listen(8089, function () {
+    console.log("start server at port 8089");
+});
