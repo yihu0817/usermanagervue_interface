@@ -6,13 +6,15 @@ var session = require('express-session');
 
 var app = express();
 
-app.set('views', 'views');  //模板所在的目录 views
+app.set('views', 'views'); //模板所在的目录 views
 app.engine('.html', ejs.__express);
-app.set('view engine', 'html')  //模板引擎使用html
+app.set('view engine', 'html') //模板引擎使用html
 
-app.use(bodyParser.json());   //使用json解析器body  {"username":"admin"}
-app.use(bodyParser.urlencoded({extended: false})); //使用urlencoded解析名称值对  username=admin
-app.use(express.static('public'));  //静态资料所在目录 public
+app.use(bodyParser.json()); //使用json解析器body  {"username":"admin"}
+app.use(bodyParser.urlencoded({
+    extended: false
+})); //使用urlencoded解析名称值对  username=admin
+app.use(express.static('public')); //静态资料所在目录 public
 // 引入session中间件
 app.use(session({ // 这里的name值得是cookie的name，默认cookie的name是：connect.sid
     name: 'web1803',
@@ -26,16 +28,18 @@ app.use(session({ // 这里的name值得是cookie的name，默认cookie的name�
     saveUninitialized: true,
 
 }));
-
 // 解决跨域问题
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", " * ");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-MethodS", "GET,POST,PUT,DELETE,OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type,username");
+    // res.header("Access-Control-Allow-Headers", "Content-Type,username");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With, Authorization");
+
     next();
 });
 
-app.use(usersApi);  //使用路由模块
+app.use(usersApi); //使用路由模块
 
 module.exports = app;

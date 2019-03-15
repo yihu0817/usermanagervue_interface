@@ -2,7 +2,7 @@ var express = require('express');
 var db = require('../config/db');
 var querydb = require('../utils/querydb');
 var upload = require('../utils/fileupload_util');
-
+var jwt = require('jsonwebtoken');
 var router = express.Router(); //获取路由对象
 
 //根据id查询用户接口:/api/find
@@ -33,9 +33,17 @@ router.post("/api/login", function (req, res) {
 
     querydb(sql, parameters).then(function (data) {
         if (data != null && data.length > 0) {
+            const userToken = {
+                name: username,
+                originExp: Date.now() + 60 * 60 * 1000, // 设置过期时间（毫秒）为 1 小时
+            }
+            const secret = 'vue-web1803-secret'; // 指定密钥，这是之后用来判断 token 合法性的标志
+            const token = jwt.sign(userToken, secret); // 签发 token
+
             res.send({
                 resultCode: 1,
                 resultInfo: data[0],
+                token: token,
             })
         } else {
             res.send({
