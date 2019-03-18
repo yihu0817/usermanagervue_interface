@@ -18,9 +18,10 @@ var storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         var currentDate = Date.now();
-        req.session.headerimg = '/upload/' + file.fieldname + '-' + currentDate + '.jpg';
+        var fileurl = file.fieldname + '-' + currentDate + '.jpg';
+        req.session.headerimg = '/upload/' + fileurl;
         // 将保存文件名设置为 字段名 + 时间戳，比如 logo-1478521468943
-        cb(null, file.fieldname + '-' + currentDate + '.jpg');
+        cb(null, fileurl);
     }
 });
 // 通过 storage 选项来对 上传行为 进行定制化

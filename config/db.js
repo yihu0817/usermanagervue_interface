@@ -22,7 +22,7 @@ var pool = mysql.createPool({
     host: 'localhost',
     port: '3306',
     user: 'root',
-    password: 'b123',
+    password: 'b123',//'b123',
     database: 'usermanager'
 });
 

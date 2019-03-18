@@ -89,11 +89,13 @@ router.get("/api/delete", function (req, res) {
     });
 
 });
+
+
 //添加用户接口 post请求:/api/add
 router.post("/api/add", upload.single('fileHeader'), function (req, res) {
     var userName = req.body.username; //接收表单用户名参数
     var passWord = req.body.psw; //接收表单密码参数
-    console.log("userName: " + userName + ",  passWord :" + passWord);
+    console.log("userName: " + userName + ",  passWord :" + passWord + ' hearimg :' + req.session.headerimg);
     var sql = "INSERT INTO user (username,password,headerimg) VALUES (?,?,?)";
     var parameters = [userName, passWord, req.session.headerimg];
 
@@ -111,6 +113,37 @@ router.post("/api/add", upload.single('fileHeader'), function (req, res) {
     });
 
 });
+
+//添加用户接口 post请求:/api/add
+router.post("/api/add2", function (req, res) {
+    var userName = req.body.username; //接收表单用户名参数
+    var passWord = req.body.psw; //接收表单密码参数
+    var headerimg = req.body.imgUrl;
+    console.log("userName: " + userName + ",  passWord :" + passWord + ' hearimg :' + headerimg);
+    var sql = "INSERT INTO user (username,password,headerimg) VALUES (?,?,?)";
+    var parameters = [userName, passWord, headerimg];
+
+    querydb(sql, parameters).then(function (data) {
+        console.log("插入数据成功!");
+        res.send({
+            resultCode: 1,
+            resultInfo: 'ok',
+        });
+    }).catch(error => {
+        res.send({
+            resultCode: -1,
+            resultInfo: 'no',
+        });
+    });
+
+});
+
+router.post("/api/uploadFile", upload.single('headerImg'), function (req, res) {
+    // console.log('图片上传>>' + req.session.headerimg);
+    res.send(`${req.session.headerimg}`);
+});
+
+
 //修改用户接口 post请求:/api/update
 router.post("/api/update", function (req, res) {
     var id = req.body.id;
